@@ -1,0 +1,58 @@
+# API_CONTRACT.md
+
+---
+
+## Auth
+
+| Method | Path           | Auth Required | Request Body                                                                 | Response Body                                   | Status Codes |
+|--------|----------------|--------------|------------------------------------------------------------------------------|--------------------------------------------------|-------------|
+| POST   | /auth/login    | No           | `{ email: string, password: string }`                                        | `{ access_token: string, token_type: string }`   | 200         |
+
+---
+
+## PAC
+
+| Method | Path                | Auth Required | Request Body                                                                 | Response Body                                   | Status Codes |
+|--------|---------------------|--------------|------------------------------------------------------------------------------|--------------------------------------------------|-------------|
+| POST   | /pac                | Yes          | `{ organismo_id: number, usuario_id: number, nombre: string }`               | `{ id: number }`                                | 201         |
+| GET    | /pac/{id}           | Yes          | —                                                                            | `{ id: number, organismo_id: number, usuario_id: number, nombre: string, fecha_creacion: string, estado: string }` | 200         |
+| GET    | /pac                | Yes          | —                                                                            | `[{ id: number, organismo_id: number, usuario_id: number, nombre: string, fecha_creacion: string, estado: string }]` | 200         |
+| PUT    | /pac/publicar       | Yes          | `{ pac_id: number, firma: string }`                                          | `{ pac_id: number, estado: string }`            | 200         |
+
+---
+
+## Requerimiento
+
+| Method | Path                        | Auth Required | Request Body                                                                 | Response Body                                   | Status Codes |
+|--------|-----------------------------|--------------|------------------------------------------------------------------------------|--------------------------------------------------|-------------|
+| POST   | /requerimiento              | Yes          | `{ pac_id: number, descripcion: string, monto_estimado: string, moneda: string }` | `{ id: number }`                                | 201         |
+| GET    | /requerimiento/{id}         | Yes          | —                                                                            | `{ id: number, pac_id: number, descripcion: string, monto_estimado: string, moneda: string }` | 200         |
+| GET    | /requerimiento?pac_id={pac_id} | Yes       | —                                                                            | `[{ id: number, pac_id: number, descripcion: string, monto_estimado: string, moneda: string }]` | 200         |
+
+---
+
+## Item
+
+| Method | Path                                 | Auth Required | Request Body                                                                 | Response Body                                   | Status Codes |
+|--------|--------------------------------------|--------------|------------------------------------------------------------------------------|--------------------------------------------------|-------------|
+| POST   | /item                                | Yes          | `{ requerimiento_id: number, codigo: string, descripcion: string, cantidad: number, precio_unitario: string }` | `{ id: number }`                                | 201         |
+| GET    | /item/{id}                           | Yes          | —                                                                            | `{ id: number, requerimiento_id: number, codigo: string, descripcion: string, cantidad: number, precio_unitario: string }` | 200         |
+| GET    | /item?requerimiento_id={requerimiento_id} | Yes      | —                                                                            | `[{ id: number, requerimiento_id: number, codigo: string, descripcion: string, cantidad: number, precio_unitario: string }]` | 200         |
+
+---
+
+## VersionPAC
+
+| Method | Path                        | Auth Required | Request Body | Response Body                                   | Status Codes |
+|--------|-----------------------------|--------------|--------------|--------------------------------------------------|-------------|
+| GET    | /pac/{pac_id}/versiones     | Yes          | —            | `[{ id: number, pac_id: number, version: number, fecha: string, cambios: string }]` | 200         |
+
+---
+
+## OrdenCompra
+
+| Method | Path                        | Auth Required | Request Body | Response Body                                   | Status Codes |
+|--------|-----------------------------|--------------|--------------|--------------------------------------------------|-------------|
+| GET    | /pac/{pac_id}/ordenes       | Yes          | —            | `[{ id: number, numero_oc: string, pac_id: number, monto_transado: string, estado: string }]` | 200         |
+
+---
